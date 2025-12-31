@@ -15,6 +15,7 @@ const Home = () => {
   const [formTouched, setFormTouched] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const heroRef = useRef(null)
   const servicesRef = useRef(null)
   const industriesRef = useRef(null)
@@ -235,6 +236,8 @@ const Home = () => {
                 />
               </div>
             </div>
+            
+            {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <a href="#services" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
@@ -261,6 +264,73 @@ const Home = () => {
                   Contact Us
                 </a>
               </div>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-gray-700 hover:text-[#203b54] focus:outline-none focus:text-[#203b54] transition-colors"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <i className="fas fa-times text-2xl"></i>
+                ) : (
+                  <i className="fas fa-bars text-2xl"></i>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          <div
+            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+              mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="py-4 space-y-2 border-t border-gray-200">
+              <a
+                href="#services"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                Services
+              </a>
+              <a
+                href="#industries"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                Industries
+              </a>
+              <a
+                href="#expertise"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                Expertise
+              </a>
+              <a
+                href="#awards"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                Awards
+              </a>
+              <Link
+                to="/blog"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                Insights
+              </Link>
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 bg-[#203b54] text-white rounded-lg hover:bg-[#1a2f44] transition-colors font-medium text-center"
+              >
+                Contact Us
+              </a>
             </div>
           </div>
         </div>
