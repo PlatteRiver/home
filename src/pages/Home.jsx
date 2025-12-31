@@ -761,27 +761,27 @@ const Home = () => {
               <div className="bg-gradient-to-r from-[#203b54] to-[#2a4a6b] p-6 md:p-8">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
                   <span className="px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full backdrop-blur-sm">
-                    Automation & Workflow
+                    Solar Energy
                   </span>
-                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">Python</span>
-                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">Esri</span>
-                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">Dashboard</span>
+                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">Solar</span>
+                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">Site Selection</span>
+                  <span className="px-2 py-1 bg-white/10 text-white text-xs rounded-full">GIS Analysis</span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
-                  Automating Land Ownership Change Detection with Python and Esri Dashboards
+                  Why GIS is Critical for Solar Energy Site Selection
                 </h3>
                 <div className="flex flex-wrap items-center gap-4 text-white/90 text-sm">
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-user-circle"></i>
-                    <span className="font-medium">Andy Bohnhoff</span>
+                    <span className="font-medium">Platte River Analytics</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-calendar"></i>
-                    <span>April 7, 2024</span>
+                    <span>December 31, 2025</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <i className="fas fa-clock"></i>
-                    <span>3 min read</span>
+                    <span>4 min read</span>
                   </div>
                 </div>
               </div>
@@ -789,7 +789,7 @@ const Home = () => {
               {/* Blog Post Preview Content */}
               <div className="p-6 md:p-8">
                 <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                  In the energy and real estate worlds, monitoring land ownership changes is essential. Without effective tracking, organizations risk losing critical insights that can influence major decisions. Recently at Platte River Analytics, we were presented with a problem by a real estate client where land ownership within their AOI was changing hands often and quickly.
+                  Selecting the optimal location for a solar energy project is one of the most critical decisions in renewable energy development. GIS technology transforms this complex process from guesswork into data-driven precision.
                 </p>
                 <Link
                   to="/blog"
