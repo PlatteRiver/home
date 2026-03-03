@@ -36,7 +36,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <script type="application/ld+json">
     {
@@ -70,7 +69,16 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Netlify form detection for training registration -->
+    <!-- Netlify form detection: forms must exist in built HTML for Netlify to register them -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input name="form-name" value="contact" type="hidden" />
+      <input name="bot-field" />
+      <input name="firstName" />
+      <input name="lastName" />
+      <input name="email" type="email" />
+      <input name="company" />
+      <textarea name="message"></textarea>
+    </form>
     <form name="training-registration" netlify netlify-honeypot="bot-field" hidden>
       <input name="firstName" />
       <input name="lastName" />
