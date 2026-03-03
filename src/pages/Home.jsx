@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import Footer from '../components/Footer'
 
 const Home = () => {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -15,6 +16,7 @@ const Home = () => {
   const [formTouched, setFormTouched] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const formMountTimeRef = useRef(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const heroRef = useRef(null)
   const servicesRef = useRef(null)
@@ -76,19 +78,23 @@ const Home = () => {
     return () => observer.disconnect()
   }, [])
 
-  // Smooth scroll for anchor links
+  // Smooth scroll for anchor links (event delegation so child elements like spans are handled)
   useEffect(() => {
-    const links = document.querySelectorAll('a[href^="#"]')
-    links.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault()
-        const targetId = link.getAttribute('href').substring(1)
-        const targetElement = document.getElementById(targetId)
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      })
-    })
+    const handleHashClick = (e) => {
+      const link = e.target.closest('a[href^="#"]')
+      if (!link) return
+      const href = link.getAttribute('href')
+      if (href === '#') return
+      e.preventDefault()
+      const targetId = href.slice(1)
+      const el = document.getElementById(targetId)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        window.history.replaceState(null, '', '#' + targetId)
+      }
+    }
+    document.addEventListener('click', handleHashClick, true)
+    return () => document.removeEventListener('click', handleHashClick, true)
   }, [])
 
   // Form validation
@@ -158,17 +164,32 @@ const Home = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+    const form = e.target
+
+    // Honeypot: reject if bot-field or website (hidden trap) was filled
+    const botField = (form.elements['bot-field'] && form.elements['bot-field'].value) || ''
+    const websiteTrap = (form.elements['website'] && form.elements['website'].value) || ''
+    if (botField.trim() !== '' || websiteTrap.trim() !== '') {
+      setSubmitStatus('success') // silent reject: show success to bot
+      return
+    }
+    // Time-based: reject if form submitted in under 2 seconds (likely bot)
+    if (formMountTimeRef.current && Date.now() - formMountTimeRef.current < 2000) {
+      setSubmitStatus('success')
+      return
+    }
+
     // Mark all fields as touched
     const touched = Object.keys(formData).reduce((acc, key) => {
-      acc[key] = true
+      if (!['bot-field', 'website'].includes(key)) acc[key] = true
       return acc
     }, {})
     setFormTouched(touched)
 
-    // Validate all fields
+    // Validate all fields (exclude honeypots)
     const errors = {}
     Object.keys(formData).forEach(key => {
+      if (['bot-field', 'website'].includes(key)) return
       const error = validateField(key, formData[key])
       if (error) errors[key] = error
     })
@@ -187,7 +208,8 @@ const Home = () => {
         const response = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formDataToSubmit).toString()
+          body: new URLSearchParams(formDataToSubmit).toString(),
+          mode: 'same-origin'
         })
 
         if (response.ok) {
@@ -226,20 +248,34 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center" style={{ minHeight: '5.625rem', padding: '0.5rem 0' }}>
             <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                {/* Logo */}
-                <img 
-                  src="/platte_river_analytics_logo.jpg" 
-                  alt="Platte River Analytics Logo" 
+              <Link
+                to="/"
+                className="flex-shrink-0 flex items-center"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                aria-label="Platte River Analytics home"
+              >
+                <img
+                  src="/platte_river_analytics_logo.jpg"
+                  alt="Platte River Analytics Logo"
                   className="w-auto transition-transform hover:scale-105 duration-300"
                   style={{ height: '5.625rem' }}
+                  width="200"
+                  height="90"
                 />
-              </div>
+              </Link>
             </div>
             
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
+                <Link to="/about" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
+                  About
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+                <Link to="/acrevision" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
+                  AcreVision
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
                 <a href="#services" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
                   Services
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
@@ -248,14 +284,10 @@ const Home = () => {
                   Industries
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="#expertise" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
-                  Expertise
+                <Link to="/training" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
+                  Training
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#awards" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
-                  Awards
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                </Link>
                 <Link to="/blog" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
                   Insights
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
@@ -289,6 +321,20 @@ const Home = () => {
             }`}
           >
             <div className="py-4 space-y-2 border-t border-gray-200">
+              <Link
+                to="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                About
+              </Link>
+              <Link
+                to="/acrevision"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                AcreVision
+              </Link>
               <a
                 href="#services"
                 onClick={() => setMobileMenuOpen(false)}
@@ -303,20 +349,13 @@ const Home = () => {
               >
                 Industries
               </a>
-              <a
-                href="#expertise"
+              <Link
+                to="/training"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
               >
-                Expertise
-              </a>
-              <a
-                href="#awards"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
-              >
-                Awards
-              </a>
+                Training
+              </Link>
               <Link
                 to="/blog"
                 onClick={() => setMobileMenuOpen(false)}
@@ -336,6 +375,7 @@ const Home = () => {
         </div>
       </nav>
 
+      <main>
       {/* Hero Section with Animated Company Name */}
       <section 
         ref={heroRef}
@@ -465,7 +505,7 @@ const Home = () => {
       <section 
         id="services" 
         ref={servicesRef}
-        className="py-20 bg-white relative"
+        className="py-20 bg-white relative scroll-mt-24"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['services'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -498,6 +538,68 @@ const Home = () => {
               </div>
             ))}
           </div>
+
+          {/* Geospatial Strategy – featured */}
+          <div
+            className={`mt-16 rounded-2xl overflow-hidden border-2 border-[#203b54] bg-gradient-to-br from-[#f5f7f9] to-white shadow-xl transition-all duration-1000 ${isVisible['services'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            style={{ transitionDelay: '600ms' }}
+          >
+            <div className="p-8 md:p-12 lg:flex lg:items-start lg:gap-10">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-[#203b54] w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i className="fas fa-route text-white text-2xl"></i>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900">Geospatial Strategy</h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  A geospatial strategy is used to detail how a company or organization is going to utilize GIS in the future. The strategy includes important items like company vision, hardware, software, training and value propositions.
+                </p>
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  An important aspect of any geospatial strategy is the <strong>geospatial roadmap</strong>. This roadmap details how a company is going to utilize GIS in the next 1–3 years and includes themes on data, software and training.
+                </p>
+                <p className="text-gray-600 font-semibold mb-3">Other important questions a geospatial strategy can help answer:</p>
+                <ul className="space-y-2 text-gray-700 mb-8">
+                  <li className="flex items-start gap-2">
+                    <i className="fas fa-check text-[#203b54] mt-1.5 flex-shrink-0"></i>
+                    <span>How will geospatial technology benefit our stakeholders?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <i className="fas fa-check text-[#203b54] mt-1.5 flex-shrink-0"></i>
+                    <span>What is the scope of our GIS aspirations?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <i className="fas fa-check text-[#203b54] mt-1.5 flex-shrink-0"></i>
+                    <span>What is our strategy for data collaboration and sharing?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <i className="fas fa-check text-[#203b54] mt-1.5 flex-shrink-0"></i>
+                    <span>What type of GIS training would benefit everyone at the company?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <i className="fas fa-check text-[#203b54] mt-1.5 flex-shrink-0"></i>
+                    <span>What is our desired software and hardware improvements?</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="lg:w-80 flex-shrink-0">
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-md">
+                  <p className="text-sm font-semibold text-[#203b54] mb-2">Free resource</p>
+                  <p className="text-gray-600 text-sm mb-4">
+                    Get our geospatial strategy form to start planning your organization’s GIS future.
+                  </p>
+                  <a
+                    href="/Geospatial%20Strategy%20updated.avif"
+                    download="Geospatial-Strategy-Form.avif"
+                    className="inline-flex items-center justify-center gap-2 w-full bg-[#203b54] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1a2f44] transition-all shadow-md hover:shadow-lg"
+                  >
+                    <i className="fas fa-file-download" aria-hidden="true"></i>
+                    <span>Download the Geospatial Strategy Form</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -505,7 +607,7 @@ const Home = () => {
       <section 
         id="industries" 
         ref={industriesRef}
-        className="py-20 bg-gray-50 relative"
+        className="py-20 bg-gray-50 relative scroll-mt-24"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['industries'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -580,6 +682,8 @@ const Home = () => {
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" 
                   alt="Data analytics dashboard" 
                   className="rounded-xl w-full h-auto"
+                  width="800"
+                  height="600"
                 />
               </div>
             </div>
@@ -631,6 +735,8 @@ const Home = () => {
                   <img 
                     src={award.image} 
                     alt={award.name}
+                    width="200"
+                    height="128"
                     className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
                     onError={(e) => {
                       e.target.style.display = 'none'
@@ -679,6 +785,8 @@ const Home = () => {
                 <img 
                   src={partner.image} 
                   alt={partner.name}
+                  width="200"
+                  height="128"
                   className="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-110"
                   onError={(e) => {
                     e.target.style.display = 'none'
@@ -720,13 +828,13 @@ const Home = () => {
               { name: 'Customer 6', image: '/customers/customer6.png', darkBg: false, url: null },
               { name: 'TI', image: '/customers/ti.png', darkBg: false, url: null },
               { name: 'Intersect Power', image: '/customers/intersect-power.png', darkBg: false, url: 'https://intersectpower.com/' },
-              { name: 'Customer 9', image: '/customers/customer9.png', darkBg: false, url: null },
+              { name: 'Customer 9', image: '/customers/customer9.png', darkBg: false, url: null, scale: 3 },
               { name: 'CA Horizontal', image: '/customers/ca-horizontal.png', darkBg: false, url: null },
-              { name: 'Sitio', image: '/customers/sitio-logo.png', darkBg: false, url: 'https://sitio.com/' },
+              { name: 'Sitio', image: '/customers/sitio-logo.png', darkBg: true, url: 'https://sitio.com/' },
               { name: 'Reid Consulting', image: '/customers/reid-consulting.png', darkBg: false, url: 'https://reidconsulting.com/' },
               { name: 'Customer 13', image: '/customers/customer13.png', darkBg: false, url: null },
               { name: 'Kimmeridge', image: '/customers/kimmeridge.png', darkBg: false, url: 'https://kimmeridge.com/' },
-              { name: 'Syrcuit', image: '/customers/syrcuit.png', darkBg: false, url: 'https://syrcuit.com/' }
+              { name: 'Syrcuit', image: '/customers/syrcuit.png', darkBg: true, url: 'https://syrcuit.com/' }
             ].map((customer, index) => {
               const LogoContent = (
                 <div 
@@ -736,6 +844,9 @@ const Home = () => {
                   <img 
                     src={customer.image} 
                     alt={customer.name}
+                    width="200"
+                    height="112"
+                    style={customer.scale ? { transform: `scale(${customer.scale})` } : undefined}
                     className={`max-h-full max-w-full object-contain transition-all duration-300 ${customer.darkBg ? 'brightness-0 invert opacity-90 group-hover:opacity-100 group-hover:scale-110' : 'opacity-90 group-hover:opacity-100 group-hover:scale-110 filter group-hover:brightness-110'}`}
                     onError={(e) => {
                       e.target.style.display = 'none'
@@ -886,7 +997,7 @@ const Home = () => {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-[#203b54] to-[#2a4a6b] relative overflow-hidden">
+      <section id="contact" className="py-20 bg-gradient-to-br from-[#203b54] to-[#2a4a6b] relative overflow-hidden scroll-mt-24">
         {/* Animated background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-72 h-72 bg-[#97a3b1] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
@@ -913,13 +1024,15 @@ const Home = () => {
             data-netlify="true" 
             data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
+            onFocus={() => { if (formMountTimeRef.current == null) formMountTimeRef.current = Date.now() }}
             className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 border border-white/20"
           >
             <input type="hidden" name="form-name" value="contact" />
-            <p className="hidden">
-              <label>
-                Don't fill this out if you're human: <input name="bot-field" />
-              </label>
+            <p className="hidden" aria-hidden="true">
+              <label>Don't fill this out if you're human: <input name="bot-field" tabIndex={-1} autoComplete="off" /></label>
+            </p>
+            <p className="absolute -left-[9999px] top-0 opacity-0 pointer-events-none" aria-hidden="true">
+              <label>Leave empty: <input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
             </p>
 
             {/* Success/Error Messages */}
@@ -1166,64 +1279,9 @@ const Home = () => {
         <i className="fas fa-comments text-xl group-hover:scale-110 transition-transform"></i>
       </a>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <img 
-                src="/platte_river_analytics_logo.jpg" 
-                alt="Platte River Analytics Logo" 
-                className="h-8 w-auto mb-4 brightness-0 invert"
-              />
-              <p className="text-gray-400 text-sm">
-                Location intelligence and GIS consulting for better business decisions.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">Services</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#services" className="hover:text-white transition-colors">GIS Consulting</a></li>
-                <li><a href="#services" className="hover:text-white transition-colors">Interactive Mapping</a></li>
-                <li><a href="#services" className="hover:text-white transition-colors">Data Collection</a></li>
-                <li><a href="#services" className="hover:text-white transition-colors">Site Selection</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">Industries</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#industries" className="hover:text-white transition-colors">Broadband</a></li>
-                <li><a href="#industries" className="hover:text-white transition-colors">Energy</a></li>
-                <li><a href="#industries" className="hover:text-white transition-colors">Real Estate</a></li>
-                <li><a href="#industries" className="hover:text-white transition-colors">Economic Development</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">Connect</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-                <li><Link to="/#contact" className="hover:text-white transition-colors">Newsletter</Link></li>
-                <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
-              </ul>
-              <div className="flex space-x-4 mt-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors transform hover:scale-125 duration-300">
-                  <i className="fab fa-linkedin text-xl"></i>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors transform hover:scale-125 duration-300">
-                  <i className="fab fa-twitter text-xl"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Platte River Analytics. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      </main>
+
+      <Footer />
 
       <style>{`
         @keyframes mapPattern {

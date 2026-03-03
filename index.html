@@ -3,16 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Platte River Analytics - Location Intelligence & GIS Consulting</title>
-    <meta name="description" content="Expert GIS consulting, interactive mapping, and location intelligence solutions. ESRI-based spatial analytics for better business decisions." />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Platte River Analytics | Enterprise GIS Consulting & Location Intelligence</title>
+    <meta name="description" content="Platte River Analytics delivers Fortune 500–grade GIS consulting, Esri platform implementation, and location intelligence. Site selection, interactive mapping, dashboards, and geospatial strategy for energy, broadband, and real estate." />
+    <meta name="keywords" content="GIS consulting, location intelligence, Esri, ArcGIS, spatial analytics, site selection, interactive mapping, geospatial strategy, renewable energy GIS, broadband deployment, Platte River Analytics" />
+    <meta name="author" content="Platte River Analytics" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.platte-river.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Platte River Analytics" />
+    <meta property="og:title" content="Platte River Analytics | Enterprise GIS Consulting & Location Intelligence" />
+    <meta property="og:description" content="Expert GIS consulting, Esri implementation, and location intelligence for energy, broadband, and real estate. Site selection, dashboards, and geospatial strategy." />
+    <meta property="og:url" content="https://www.platte-river.com/" />
+    <meta property="og:image" content="https://www.platte-river.com/platte_river_analytics_logo.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Platte River Analytics | Enterprise GIS Consulting & Location Intelligence" />
+    <meta name="twitter:description" content="Expert GIS consulting, Esri implementation, and location intelligence for energy, broadband, and real estate." />
+    <meta name="twitter:image" content="https://www.platte-river.com/platte_river_analytics_logo.jpg" />
+
+    <meta name="theme-color" content="#203b54" />
+    <meta name="geo.region" content="US-IL" />
+    <meta name="geo.placename" content="Monticello, IL" />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.platte-river.com/#organization",
+          "name": "Platte River Analytics",
+          "url": "https://www.platte-river.com",
+          "logo": { "@type": "ImageObject", "url": "https://www.platte-river.com/platte_river_analytics_logo.jpg" },
+          "description": "Location intelligence and GIS consulting for enterprise and government. Esri Business Partner specializing in site selection, interactive mapping, and geospatial strategy.",
+          "email": "support@platte-river.com",
+          "address": { "@type": "PostalAddress", "addressLocality": "Monticello", "addressRegion": "IL", "postalCode": "61856" },
+          "sameAs": [
+            "https://www.linkedin.com/company/platte-river-analytics/",
+            "https://www.instagram.com/platteriveranalytics/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.platte-river.com/#website",
+          "url": "https://www.platte-river.com",
+          "name": "Platte River Analytics",
+          "publisher": { "@id": "https://www.platte-river.com/#organization" },
+          "inLanguage": "en-US"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <!-- Netlify form detection for training registration -->
+    <form name="training-registration" netlify netlify-honeypot="bot-field" hidden>
+      <input name="firstName" />
+      <input name="lastName" />
+      <input name="company" />
+      <input name="position" />
+      <input name="email" type="email" />
+      <input name="cityState" />
+      <select name="classOption"><option value=""></option></select>
+    </form>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
