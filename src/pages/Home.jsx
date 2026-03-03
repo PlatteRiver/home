@@ -165,16 +165,29 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.target
+    const log = (msg, data) => {
+      if (data !== undefined) console.log('[ContactForm]', msg, data)
+      else console.log('[ContactForm]', msg)
+    }
+
+    log('Submit started')
 
     // Honeypot: reject if bot-field or website (hidden trap) was filled
     const botField = (form.elements['bot-field'] && form.elements['bot-field'].value) || ''
     const websiteTrap = (form.elements['website'] && form.elements['website'].value) || ''
+    log('Honeypot check', { botFieldLength: botField.length, botFieldFilled: botField.trim() !== '', websiteTrapLength: websiteTrap.length, websiteTrapFilled: websiteTrap.trim() !== '' })
     if (botField.trim() !== '' || websiteTrap.trim() !== '') {
+      log('BLOCKED: Honeypot filled (silent reject)')
       setSubmitStatus('success') // silent reject: show success to bot
       return
     }
     // Time-based: reject if form submitted in under 2 seconds (likely bot)
-    if (formMountTimeRef.current && Date.now() - formMountTimeRef.current < 2000) {
+    const now = Date.now()
+    const mountTime = formMountTimeRef.current
+    const elapsed = mountTime != null ? now - mountTime : null
+    log('Time check', { formMountTime: mountTime, elapsedMs: elapsed, rejected: elapsed != null && elapsed < 2000 })
+    if (mountTime != null && now - mountTime < 2000) {
+      log('BLOCKED: Submitted too fast (silent reject)')
       setSubmitStatus('success')
       return
     }
@@ -194,25 +207,33 @@ const Home = () => {
       if (error) errors[key] = error
     })
     setFormErrors(errors)
+    log('Validation', { errorCount: Object.keys(errors).length, errors: Object.keys(errors).length ? errors : null })
 
     // If no errors, submit
     if (Object.keys(errors).length === 0) {
       setIsSubmitting(true)
       setSubmitStatus(null)
-      
-      // Netlify form submission
-      const form = e.target
+
       const formDataToSubmit = new FormData(form)
-      
+      const bodyString = new URLSearchParams(formDataToSubmit).toString()
+      const bodyKeys = [...formDataToSubmit.keys()]
+      log('Submitting to Netlify', { bodyKeys, bodyLength: bodyString.length, formName: form.getAttribute('name') })
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        log('NOTE: You are on localhost. Netlify forms only work when deployed to Netlify or when using "netlify dev".')
+      }
+
       try {
         const response = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formDataToSubmit).toString(),
+          body: bodyString,
           mode: 'same-origin'
         })
 
+        log('Response received', { ok: response.ok, status: response.status, statusText: response.statusText, url: response.url, type: response.type })
+
         if (response.ok) {
+          log('SUCCESS')
           setSubmitStatus('success')
           setFormData({
             firstName: '',
@@ -225,13 +246,20 @@ const Home = () => {
           setFormErrors({})
           form.reset()
         } else {
+          const responseText = await response.text()
+          log('FAIL: Non-OK response', { status: response.status, statusText: response.statusText, bodyPreview: responseText.slice(0, 500), bodyLength: responseText.length })
+          if (responseText.length > 500) log('FAIL: Response body (rest)', responseText.slice(500, 1500))
           setSubmitStatus('error')
         }
       } catch (error) {
+        console.error('[ContactForm] FAIL: Network or other error', error)
+        log('FAIL: Exception', { name: error?.name, message: error?.message, stack: error?.stack })
         setSubmitStatus('error')
       } finally {
         setIsSubmitting(false)
       }
+    } else {
+      log('Submit aborted: validation errors')
     }
   }
 
