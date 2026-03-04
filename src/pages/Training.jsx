@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+
+const SITE_URL = 'https://www.platte-river.com'
 
 const Training = () => {
   const [isVisible, setIsVisible] = useState({})
@@ -180,8 +183,16 @@ const Training = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>ArcGIS & GIS Training | Platte River Analytics</title>
+        <meta name="description" content="Esri training courses: ArcGIS Pro, ArcGIS Online, Experience Builder. Custom and ready-made classes for petroleum, energy, and GIS professionals." />
+        <link rel="canonical" href={SITE_URL + '/training'} />
+        <meta property="og:title" content="ArcGIS & GIS Training | Platte River Analytics" />
+        <meta property="og:url" content={SITE_URL + '/training'} />
+        <meta property="og:description" content="Esri training courses on ArcGIS Pro, ArcGIS Online, and more. Custom and ready-made classes from an Esri Business Partner." />
+      </Helmet>
       <Navbar />
-
+      <main>
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[#203b54] via-[#2a4a6b] to-[#1a2f44] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -403,6 +414,7 @@ const Training = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   )

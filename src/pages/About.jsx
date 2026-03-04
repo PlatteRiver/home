@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+
+const SITE_URL = 'https://www.platte-river.com'
 
 const About = () => {
   const [isVisible, setIsVisible] = useState({})
@@ -29,8 +32,16 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>About Us | Esri Partner | Platte River Analytics</title>
+        <meta name="description" content="Award-winning Esri Business Partner. Location analytics, spatial business intelligence, and ArcGIS System Ready Specialty for energy and GIS consulting." />
+        <link rel="canonical" href={SITE_URL + '/about'} />
+        <meta property="og:title" content="About Us | Esri Partner | Platte River Analytics" />
+        <meta property="og:url" content={SITE_URL + '/about'} />
+        <meta property="og:description" content="Award-winning Esri Business Partner promoting business development through location analytics and spatial business intelligence." />
+      </Helmet>
       <Navbar />
-
+      <main>
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[#203b54] via-[#2a4a6b] to-[#1a2f44] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -141,9 +152,9 @@ const About = () => {
           </div>
           <div className={`grid md:grid-cols-3 gap-8 transition-all duration-700 delay-200 ${isVisible['awards'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {[
-              { name: 'ESRI Partner Network Bronze', image: '/awards/esri-partner-network-bronze.png', description: 'Recognized as a Bronze Partner in the ESRI Partner Network' },
+              { name: 'Esri Partner Network Bronze', image: '/awards/esri-partner-network-bronze.png', description: 'Recognized as a Bronze Partner in the Esri Partner Network' },
               { name: 'ArcGIS System Ready Specialty', image: '/awards/arcgis-system-ready-specialty.png', description: 'Certified ArcGIS System Ready Specialty partner' },
-              { name: 'ESRI Partner Conference 2024', image: '/awards/esri-partner-conference-2024.png', description: 'Award winner at the 2024 ESRI Partner Conference' },
+              { name: 'Esri Partner Conference 2024', image: '/awards/esri-partner-conference-2024.png', description: 'Award winner at the 2024 Esri Partner Conference' },
             ].map((award, index) => (
               <div
                 key={index}
@@ -184,6 +195,7 @@ const About = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   )

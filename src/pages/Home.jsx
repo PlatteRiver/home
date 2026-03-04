@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Footer from '../components/Footer'
+
+const SITE_URL = 'https://www.platte-river.com'
 
 const Home = () => {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -17,6 +20,7 @@ const Home = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
   const formMountTimeRef = useRef(null)
+  const contactStatusRef = useRef(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const heroRef = useRef(null)
   const servicesRef = useRef(null)
@@ -77,6 +81,13 @@ const Home = () => {
 
     return () => observer.disconnect()
   }, [])
+
+  // Scroll to success/error message after submit
+  useEffect(() => {
+    if (submitStatus === 'success' || submitStatus === 'error') {
+      contactStatusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [submitStatus])
 
   // Smooth scroll for anchor links (event delegation so child elements like spans are handled)
   useEffect(() => {
@@ -260,11 +271,24 @@ const Home = () => {
       }
     } else {
       log('Submit aborted: validation errors')
+      const firstError = Object.keys(errors)[0]
+      if (firstError && typeof document !== 'undefined') {
+        const el = document.getElementById(firstError)
+        if (el) el.focus()
+      }
     }
   }
 
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>Platte River Analytics | Enterprise GIS Consulting & Location Intelligence</title>
+        <meta name="description" content="Platte River Analytics delivers Fortune 500–grade GIS consulting, Esri platform implementation, and location intelligence. Site selection, interactive mapping, dashboards, and geospatial strategy for energy, broadband, and real estate." />
+        <link rel="canonical" href={SITE_URL + '/'} />
+        <meta property="og:title" content="Platte River Analytics | Enterprise GIS Consulting & Location Intelligence" />
+        <meta property="og:url" content={SITE_URL + '/'} />
+        <meta property="og:description" content="Expert GIS consulting, Esri implementation, and location intelligence for energy, broadband, and real estate. Site selection, dashboards, and geospatial strategy." />
+      </Helmet>
       {/* Scroll Progress Indicator */}
       <div 
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#203b54] to-[#97a3b1] z-50 transition-all duration-150"
@@ -475,7 +499,10 @@ const Home = () => {
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed hero-description">
-                  Transform spatial data into strategic decisions. Expert GIS consulting, interactive mapping, and ESRI-based solutions for organizations that need location intelligence.
+                  Transform spatial data into strategic decisions. Expert GIS consulting, interactive mapping, and Esri-based solutions for organizations that need location intelligence.
+                </p>
+                <p className="text-sm font-semibold text-[#203b54] mb-6">
+                  Esri Business Partner specializing in energy and broadband.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
                   <a href="#contact" className="bg-[#203b54] text-white px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#1a2f44] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 duration-300 group relative overflow-hidden">
@@ -546,11 +573,11 @@ const Home = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Service Cards with Glassmorphism and Enhanced Hover */}
             {[
-              { icon: 'fa-map-marked-alt', title: 'GIS Consulting & Training', desc: 'Expert guidance on ESRI products, GIS workflows, and technical skill development tailored to your organizational needs.', color: '#203b54' },
+              { icon: 'fa-map-marked-alt', title: 'GIS Consulting & Training', desc: 'Expert guidance on Esri products, GIS workflows, and technical skill development tailored to your organizational needs.', color: '#203b54' },
               { icon: 'fa-globe', title: 'Interactive Mapping & Dashboards', desc: 'Web-based maps and dashboards that combine spatial and tabular data to answer business questions and support data-driven decisions.', color: '#203b54' },
               { icon: 'fa-mobile-alt', title: 'Data Collection Solutions', desc: 'Implementation of field data collection tools, custom surveys, offline workflows, and photo capture integrated into enterprise systems.', color: '#97a3b1' },
               { icon: 'fa-search-location', title: 'Site Selection & Market Analysis', desc: 'Location-based analysis using demographics, traffic, and spatial datasets to identify optimal sites for broadband, solar, wind, and real estate projects.', color: '#203b54' },
-              { icon: 'fa-cogs', title: 'ESRI Platform Enhancement', desc: 'Custom application development, enterprise GIS configuration, workflow automation, and staff training to extend ESRI platform capabilities.', color: '#97a3b1' },
+              { icon: 'fa-cogs', title: 'Esri Platform Enhancement', desc: 'Custom application development, enterprise GIS configuration, workflow automation, and staff training to extend Esri platform capabilities.', color: '#97a3b1' },
               { icon: 'fa-chart-line', title: 'Industry-Focused Location Analytics', desc: 'Specialized GIS analytics for sectors like broadband deployment, renewable energy, real estate, and economic development.', color: '#203b54' }
             ].map((service, index) => (
               <div 
@@ -680,7 +707,7 @@ const Home = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Why Choose Platte River Analytics?</h2>
               <div className="space-y-6">
                 {[
-                  { icon: 'fa-check-circle', title: 'ESRI Expertise', desc: 'Deep knowledge of ESRI ArcGIS platform and ecosystem', color: '#203b54' },
+                  { icon: 'fa-check-circle', title: 'Esri Expertise', desc: 'Deep knowledge of Esri ArcGIS platform and ecosystem', color: '#203b54' },
                   { icon: 'fa-check-circle', title: 'Custom Solutions', desc: 'Tailored approaches that fit your specific business needs', color: '#97a3b1' },
                   { icon: 'fa-check-circle', title: 'Proven Results', desc: 'Data-driven outcomes that support strategic decision-making', color: '#203b54' },
                   { icon: 'fa-check-circle', title: 'Comprehensive Support', desc: 'From consultation to implementation and training', color: '#97a3b1' }
@@ -729,16 +756,16 @@ const Home = () => {
           <div className={`text-center mb-16 transition-all duration-1000 ${isVisible['awards'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Awards & Recognition</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Recognized for excellence in GIS solutions and ESRI platform expertise
+              Recognized for excellence in GIS solutions and Esri platform expertise
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { 
-                name: 'ESRI Partner Network Bronze', 
+                name: 'Esri Partner Network Bronze', 
                 image: '/awards/esri-partner-network-bronze.png',
-                description: 'Recognized as a Bronze Partner in the ESRI Partner Network',
+                description: 'Recognized as a Bronze Partner in the Esri Partner Network',
                 darkBg: true
               },
               { 
@@ -748,9 +775,9 @@ const Home = () => {
                 darkBg: true
               },
               { 
-                name: 'ESRI Partner Conference 2024 Award Winner', 
+                name: 'Esri Partner Conference 2024 Award Winner', 
                 image: '/awards/esri-partner-conference-2024.png',
-                description: 'Award winner at the 2024 ESRI Partner Conference',
+                description: 'Award winner at the 2024 Esri Partner Conference',
                 darkBg: true
               }
             ].map((award, index) => (
@@ -1039,7 +1066,7 @@ const Home = () => {
               Ready to Transform Your Spatial Data into Strategic Decisions?
             </h2>
             <p className="text-lg text-[#d1d6dc] mb-4 leading-relaxed">
-              Whether you're exploring location intelligence solutions, need expert GIS consulting, or have questions about ESRI platform implementation, our team is here to help.
+              Whether you're exploring location intelligence solutions, need expert GIS consulting, or have questions about Esri platform implementation, our team is here to help.
             </p>
             <p className="text-base text-[#b8c2d0] font-medium">
               Complete the form below and we'll respond within one business day to discuss how we can support your GIS initiatives.
@@ -1064,18 +1091,20 @@ const Home = () => {
             </p>
 
             {/* Success/Error Messages */}
-            {submitStatus === 'success' && (
-              <div className="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg flex items-center space-x-3 animate-fadeIn">
-                <i className="fas fa-check-circle text-green-600 text-xl"></i>
-                <p className="text-green-800 font-medium">Thank you! Your message has been sent successfully. We'll be in touch shortly.</p>
-              </div>
-            )}
-            {submitStatus === 'error' && (
-              <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg flex items-center space-x-3 animate-fadeIn">
-                <i className="fas fa-exclamation-circle text-red-600 text-xl"></i>
-                <p className="text-red-800 font-medium">Oops! Something went wrong. Please try again or contact us directly.</p>
-              </div>
-            )}
+            <div ref={contactStatusRef} aria-live="polite">
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg flex items-center space-x-3 animate-fadeIn">
+                  <i className="fas fa-check-circle text-green-600 text-xl" aria-hidden="true"></i>
+                  <p className="text-green-800 font-medium">Thank you! Your message has been sent successfully. We&apos;ll be in touch shortly.</p>
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg flex items-center space-x-3 animate-fadeIn">
+                  <i className="fas fa-exclamation-circle text-red-600 text-xl" aria-hidden="true"></i>
+                  <p className="text-red-800 font-medium">Oops! Something went wrong. Please try again or contact us directly at support@platte-river.com.</p>
+                </div>
+              )}
+            </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               {/* First Name */}

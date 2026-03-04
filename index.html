@@ -36,6 +36,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <script type="application/ld+json">
     {
@@ -62,6 +63,16 @@
           "name": "Platte River Analytics",
           "publisher": { "@id": "https://www.platte-river.com/#organization" },
           "inLanguage": "en-US"
+        },
+        {
+          "@type": "ItemList",
+          "itemListElement": [
+            { "@type": "Service", "name": "GIS Consulting & Training", "description": "Expert guidance on Esri products, GIS workflows, and technical skill development." },
+            { "@type": "Service", "name": "Interactive Mapping & Dashboards", "description": "Web-based maps and dashboards combining spatial and tabular data for data-driven decisions." },
+            { "@type": "Service", "name": "Site Selection & Market Analysis", "description": "Location-based analysis for broadband, solar, wind, and real estate projects." },
+            { "@type": "Service", "name": "Esri Platform Enhancement", "description": "Custom application development, enterprise GIS configuration, and workflow automation." },
+            { "@type": "Service", "name": "Geospatial Strategy", "description": "Geospatial roadmap and strategy for how your organization will utilize GIS." }
+          ]
         }
       ]
     }
@@ -69,16 +80,18 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Netlify form detection: forms must exist in built HTML for Netlify to register them -->
+    <!-- Netlify form detection: contact (used by Home.jsx) -->
     <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-      <input name="form-name" value="contact" type="hidden" />
-      <input name="bot-field" />
+      <input name="form-name" value="contact" />
       <input name="firstName" />
       <input name="lastName" />
       <input name="email" type="email" />
       <input name="company" />
-      <textarea name="message"></textarea>
+      <input name="message" />
+      <input name="bot-field" />
+      <input name="website" />
     </form>
+    <!-- Netlify form detection for training registration -->
     <form name="training-registration" netlify netlify-honeypot="bot-field" hidden>
       <input name="firstName" />
       <input name="lastName" />

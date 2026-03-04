@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+
+const SITE_URL = 'https://www.platte-river.com'
 
 const AcreVision = () => {
   const [isVisible, setIsVisible] = useState({})
@@ -47,8 +50,16 @@ const AcreVision = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>AcreVision | Buildable Acreage Analysis for Energy | Platte River Analytics</title>
+        <meta name="description" content="AcreVision: buildable acreage analysis widget for energy companies. Esri Enterprise Portal and ArcGIS Online. Roads, floodplains, wetlands, slope analysis." />
+        <link rel="canonical" href={SITE_URL + '/acrevision'} />
+        <meta property="og:title" content="AcreVision | Buildable Acreage Analysis for Energy | Platte River Analytics" />
+        <meta property="og:url" content={SITE_URL + '/acrevision'} />
+        <meta property="og:description" content="Buildable acreage analysis widget for Esri Portal and ArcGIS Online. Streamline site selection for energy projects." />
+      </Helmet>
       <Navbar />
-
+      <main>
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[#203b54] via-[#2a4a6b] to-[#1a2f44] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -194,6 +205,7 @@ const AcreVision = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   )

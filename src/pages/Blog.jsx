@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+
+const SITE_URL = 'https://www.platte-river.com'
 
 const Blog = () => {
   const [expandedPost, setExpandedPost] = useState(null)
@@ -614,8 +617,8 @@ If you are kicking off a CSS project, please don't hesitate to reach out for mor
       author: 'Andy Bohnhoff',
       date: 'October 15, 2023',
       readTime: '4 min read',
-      excerpt: 'Mapping available land for energy development is critical for land use planning. Utilizing ESRI ArcGIS, we can accurately assess constraints such as topography, floodplains, tree cover, and distance to power.',
-      content: `Mapping available land for energy development is critical for land use planning efforts. An expanding urban sprawl and predicting future development is essential to promote sustainability. Utilizing ESRI ArcGIS, we can accurately access constraints such as topography, floodplains, tree cover and distance to power. An accurate GIS system also allows for updated imagery and countywide parcel data.
+      excerpt: 'Mapping available land for energy development is critical for land use planning. Utilizing Esri ArcGIS, we can accurately assess constraints such as topography, floodplains, tree cover, and distance to power.',
+      content: `Mapping available land for energy development is critical for land use planning efforts. An expanding urban sprawl and predicting future development is essential to promote sustainability. Utilizing Esri ArcGIS, we can accurately access constraints such as topography, floodplains, tree cover and distance to power. An accurate GIS system also allows for updated imagery and countywide parcel data.
 
 ## Topography
 
@@ -637,7 +640,7 @@ The NHDPlus HR program is particularly enticing for solar developers. Their goal
 
 The percentage of tree cover on a given parcel is important to the existing habitat. Some states do allow for timber harvesting to clear space for solar development, however it is usually a last resort for many developers.
 
-Other than having "boots on the ground," the best visual for determining tree cover is aerial imagery. A popular form of aerial imagery today is drone imagery. However, drone imagery is cost prohibitive for many firms. The next best source is satellite imagery, available through programs like Google Earth or ESRI ArcGIS Online.
+Other than having "boots on the ground," the best visual for determining tree cover is aerial imagery. A popular form of aerial imagery today is drone imagery. However, drone imagery is cost prohibitive for many firms. The next best source is satellite imagery, available through programs like Google Earth or Esri ArcGIS Online.
 
 ArcGIS Online allows you to bring all your GIS constraints into one platform and view basemaps such as imagery, topography and transportation.
 
@@ -675,16 +678,16 @@ This presentation demonstrated how GIS professionals can leverage automation to 
     },
     {
       id: 15,
-      title: '2021 ESRI Petroleum Users Group Presentation',
+      title: '2021 Esri Petroleum Users Group Presentation',
       author: 'Andy Bohnhoff',
       date: 'April 15, 2021',
       readTime: '2 min read',
-      excerpt: 'We presented at the 2021 ESRI Petroleum Users Group meeting on "Navigating Colorado\'s Regulatory Environment" — diving into COGCC rule making and its effect on the oil and gas industry.',
-      content: `We are happy to announce a presentation at the 2021 ESRI Petroleum Users Group meeting May 4-6. The title of the presentation is "Navigating Colorado's Regulatory Environment" and will dive a little deeper into the new COGCC rule making and its effect on the oil and gas industry in Colorado.
+      excerpt: 'We presented at the 2021 Esri Petroleum Users Group meeting on "Navigating Colorado\'s Regulatory Environment" — diving into COGCC rule making and its effect on the oil and gas industry.',
+      content: `We are happy to announce a presentation at the 2021 Esri Petroleum Users Group meeting May 4-6. The title of the presentation is "Navigating Colorado's Regulatory Environment" and will dive a little deeper into the new COGCC rule making and its effect on the oil and gas industry in Colorado.
 
 ## Presentation Overview
 
-The theme of the presentation is how a single GIS analyst can utilize the suite of ESRI tools to assist multiple teams within their company in navigating the regulatory environment of Colorado.
+The theme of the presentation is how a single GIS analyst can utilize the suite of Esri tools to assist multiple teams within their company in navigating the regulatory environment of Colorado.
 
 The demo includes:
 
@@ -723,11 +726,11 @@ The Colorado county reporting the lowest unemployment rate is Summit County at 2
 
 ## How to Access This Data
 
-ESRI makes it easy to add this data into an ArcGIS Online map by searching "Esri_Demographics" or "Bureau of Labor". The layer comes complete with custom symbology, labels and expressions. You can add the Bureau of Labor's updated data through ESRI's Living Atlas.
+Esri makes it easy to add this data into an ArcGIS Online map by searching "Esri_Demographics" or "Bureau of Labor". The layer comes complete with custom symbology, labels and expressions. You can add the Bureau of Labor's updated data through Esri's Living Atlas.
 
 ## Unemployment Dashboard
 
-Using similar data, ESRI also provides a free dashboard displaying applicable charts and graphs. The dashboard features state level unemployment insurance weekly claims data from the US Department of Labor, Employment, and Training.
+Using similar data, Esri also provides a free dashboard displaying applicable charts and graphs. The dashboard features state level unemployment insurance weekly claims data from the US Department of Labor, Employment, and Training.
 
 Colorado has an initial claims index of 112, which denotes a 12% increase in claims from the previous week. On a similar note, Colorado is reporting a claims % employment index of 121. Using this index, while 100 indicates the national average, an index of 121 exhibits 21% higher employment claims than the national mean. The dashboard also displays useful information like total claims and bi-weekly claim differences.
 
@@ -744,10 +747,31 @@ If you are interested in learning more about how unemployment rates and key demo
 
   const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date))
 
+  const blogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: sortedPosts.slice(0, 20).map((post, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: post.title,
+      url: `${SITE_URL}/blog`,
+      datePublished: post.date,
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>GIS Insights & Resources | Platte River Analytics</title>
+        <meta name="description" content="Educational GIS content, ArcGIS tips, and spatial analysis examples from Platte River Analytics. Esri training insights, site selection, and location intelligence." />
+        <link rel="canonical" href={SITE_URL + '/blog'} />
+        <meta property="og:title" content="GIS Insights & Resources | Platte River Analytics" />
+        <meta property="og:url" content={SITE_URL + '/blog'} />
+        <meta property="og:description" content="Educational GIS content, ArcGIS tips, and spatial analysis examples from our team." />
+        <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
+      </Helmet>
       <Navbar />
-
+      <main>
       {/* Blog Header */}
       <section className="py-16 bg-gradient-to-br from-[#f5f7f9] via-white to-[#f0f2f4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -890,6 +914,7 @@ If you are interested in learning more about how unemployment rates and key demo
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   )
