@@ -482,8 +482,8 @@ const Home = () => {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
-            {/* Left Column - Text Content */}
+          <div className="w-full">
+            {/* Hero text content */}
             <div className={`relative ${isVisible['hero'] ? 'hero-section-visible' : ''}`}>
               {/* Animated underline effect */}
               <div className="absolute -top-4 left-0 w-1 h-1 bg-gradient-to-r from-[#203b54] to-[#97a3b1] hero-underline"></div>
@@ -515,40 +515,6 @@ const Home = () => {
                   <a href="#services" className="bg-white text-[#203b54] border-2 border-[#203b54] px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#f5f7f9] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 hover:border-[#97a3b1]">
                     Explore Services
                   </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column - Interactive Map */}
-            <div className={`relative hero-map ${isVisible['hero'] ? 'hero-map-visible' : ''}`}>
-              {/* Interactive Map Preview with Glassmorphism */}
-              <div className="relative group">
-                {/* Animated glow effect */}
-                <div className="absolute -inset-2 bg-gradient-to-r from-[#203b54] via-[#97a3b1] to-[#203b54] rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#203b54] to-[#97a3b1] rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl border border-white/30 transform group-hover:scale-[1.02] transition-transform duration-500">
-                  {/* ArcGIS Dashboard Container */}
-                  <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[#e8ebee] to-[#dde1e5] h-72 md:h-96 shadow-inner">
-                    <iframe
-                      src="https://platte-river.maps.arcgis.com/apps/dashboards/2fe350aaef24434c9a78bc998a355269"
-                      className="w-full h-full border-0"
-                      title="ArcGIS Dashboard - Platte River Analytics"
-                      allow="geolocation"
-                      loading="lazy"
-                    ></iframe>
-                    {/* Overlay with glassmorphism */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#203b54]/20 via-transparent to-transparent pointer-events-none"></div>
-                    <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-lg p-4 shadow-xl border border-white/40 transform group-hover:scale-105 transition-transform duration-300">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></div>
-                        <span className="text-sm font-bold text-[#203b54]">Live ArcGIS Dashboard</span>
-                      </div>
-                    </div>
-                    {/* Animated scan line effect */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#97a3b1] to-transparent opacity-50 animate-scan"></div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -593,10 +559,45 @@ const Home = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
+      {/* Live Dashboard Section – full width */}
+      <section className="w-full py-16 md:py-20 bg-gradient-to-br from-[#f5f7f9] to-[#e8ebee] relative overflow-hidden">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="relative group max-w-[1920px] mx-auto">
+            <div className="absolute -inset-2 bg-gradient-to-r from-[#203b54] via-[#97a3b1] to-[#203b54] rounded-2xl blur-xl opacity-20 group-hover:opacity-35 transition duration-1000"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-2xl border border-white/50">
+              <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[#e8ebee] to-[#dde1e5] h-96 md:h-[28rem] lg:h-[36rem] shadow-inner">
+                <iframe
+                  src="https://platte-river.maps.arcgis.com/apps/dashboards/2fe350aaef24434c9a78bc998a355269"
+                  className="w-full h-full border-0"
+                  title="ArcGIS Dashboard - Platte River Analytics"
+                  allow="geolocation"
+                  loading="lazy"
+                ></iframe>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#203b54]/15 via-transparent to-transparent pointer-events-none"></div>
+                <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-lg p-4 shadow-xl border border-white/40">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></div>
+                    <span className="text-sm font-bold text-[#203b54]">Live ArcGIS Dashboard</span>
+                  </div>
+                </div>
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#97a3b1] to-transparent opacity-50 animate-scan"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Geospatial Strategy Section */}
+      <section className="py-20 bg-white relative scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Geospatial Strategy – featured */}
           <div
-            className={`mt-16 rounded-2xl overflow-hidden border-2 border-[#203b54] bg-gradient-to-br from-[#f5f7f9] to-white shadow-xl transition-all duration-1000 ${isVisible['services'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            className={`rounded-2xl overflow-hidden border-2 border-[#203b54] bg-gradient-to-br from-[#f5f7f9] to-white shadow-xl transition-all duration-1000 ${isVisible['services'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             style={{ transitionDelay: '600ms' }}
           >
             <div className="p-8 md:p-12 lg:flex lg:items-start lg:gap-10">
