@@ -482,11 +482,11 @@ const Home = () => {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-          <div className="w-full">
+          <div className="w-full max-w-3xl mx-auto text-center">
             {/* Hero text content */}
             <div className={`relative ${isVisible['hero'] ? 'hero-section-visible' : ''}`}>
-              {/* Animated underline effect */}
-              <div className="absolute -top-4 left-0 w-1 h-1 bg-gradient-to-r from-[#203b54] to-[#97a3b1] hero-underline"></div>
+              {/* Animated underline effect – centered */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-[#203b54] to-[#97a3b1] hero-underline"></div>
               
               <div className={`hero-content ${isVisible['hero'] ? 'hero-visible' : ''}`}>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 leading-tight hero-title mt-20 md:mt-24 lg:mt-28">
@@ -504,9 +504,9 @@ const Home = () => {
                 <p className="text-sm font-semibold text-[#203b54] mb-6">
                   Esri Business Partner specializing in energy and broadband.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 hero-buttons">
+                <div className="flex flex-col sm:flex-row gap-4 hero-buttons justify-center">
                   <a href="#contact" className="bg-[#203b54] text-white px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#1a2f44] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 duration-300 group relative overflow-hidden">
-                    <span className="relative z-10 flex items-center">
+                    <span className="relative z-10 flex items-center justify-center">
                       Request a Consultation
                       <i className="fas fa-arrow-right ml-2 inline-block transform group-hover:translate-x-1 transition-transform"></i>
                     </span>
