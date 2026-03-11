@@ -67,7 +67,17 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Platte River Analytics. All rights reserved.</p>
+          <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <span>&copy; {new Date().getFullYear()} Platte River Analytics. All rights reserved.</span>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <Link to="/privacy" className="inline-block py-2 hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="hidden sm:inline" aria-hidden="true">·</span>
+            <Link to="/terms" className="inline-block py-2 hover:text-white transition-colors">
+              Terms &amp; Conditions
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

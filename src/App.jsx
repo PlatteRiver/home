@@ -5,6 +5,8 @@ import Blog from './pages/Blog'
 import About from './pages/About'
 import Training from './pages/Training'
 import AcreVision from './pages/AcreVision'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/training" element={<Training />} />
         <Route path="/acrevision" element={<AcreVision />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
       </Routes>
     </Router>
   )
