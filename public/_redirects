@@ -1,0 +1,4 @@
+# SPA fallback: serve index.html for all routes so client-side routing works.
+# Required for direct navigation or refresh on routes like /privacy, /terms, etc.
+# https://docs.netlify.com/routing/redirects/rewrites-proxies/#history-pushstate-and-single-page-apps
+/*    /index.html   200
