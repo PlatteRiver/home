@@ -37,8 +37,11 @@ const Terms = () => {
         <section className="py-12 md:py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-gray-700 leading-relaxed space-y-8">
+              <p className="text-sm text-gray-500 border-b border-gray-200 pb-4 mb-6">
+                <strong>Last updated:</strong> March 2025
+              </p>
               <p className="text-sm text-gray-500">
-                Last updated: March 2025. These terms may be updated from time to time; the current version will be posted on this page.
+                These terms may be updated from time to time; the current version will be posted on this page.
               </p>
 
               <div>
