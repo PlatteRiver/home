@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import Footer from '../components/Footer'
+import { platteDebug, platteDebugDomForms, platteDebugResponse } from '../utils/debugLog'
 
 const SITE_URL = 'https://www.platte-river.com'
 
@@ -30,6 +31,16 @@ const Home = () => {
   const partnersRef = useRef(null)
   const customersRef = useRef(null)
   const insightsRef = useRef(null)
+
+  useEffect(() => {
+    platteDebug('Home', 'mount / remount')
+    platteDebugDomForms('Home.mount')
+    return () => platteDebug('Home', 'unmount')
+  }, [])
+
+  useEffect(() => {
+    platteDebug('Home', 'submitStatus / isSubmitting changed', { submitStatus, isSubmitting })
+  }, [submitStatus, isSubmitting])
 
   // Scroll progress indicator
   useEffect(() => {
@@ -155,6 +166,11 @@ const Home = () => {
       formattedValue = value.charAt(0).toUpperCase() + value.slice(1)
     }
 
+    platteDebug('ContactForm', `input change: ${name}`, {
+      newLength: formattedValue.length,
+      preview: name === 'message' ? formattedValue.slice(0, 80) : formattedValue,
+    })
+
     setFormData(prev => ({ ...prev, [name]: formattedValue }))
     
     // Real-time validation
@@ -169,6 +185,10 @@ const Home = () => {
     const { name, value } = e.target
     setFormTouched(prev => ({ ...prev, [name]: true }))
     const error = validateField(name, value)
+    platteDebug('ContactForm', `blur: ${name}`, {
+      valueLength: (value || '').length,
+      error: error || '(none)',
+    })
     setFormErrors(prev => ({ ...prev, [name]: error }))
   }
 
@@ -176,19 +196,26 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.target
-    const log = (msg, data) => {
-      if (data !== undefined) console.log('[ContactForm]', msg, data)
-      else console.log('[ContactForm]', msg)
-    }
 
-    log('Submit started')
+    platteDebug('ContactForm', '=== SUBMIT started ===')
+    platteDebugDomForms('ContactForm.beforeChecks')
+    platteDebug('ContactForm', 'event.target form snapshot', {
+      name: form.getAttribute('name'),
+      method: form.method,
+      action: form.action || '(empty)',
+    })
 
     // Honeypot: reject if bot-field or website (hidden trap) was filled
     const botField = (form.elements['bot-field'] && form.elements['bot-field'].value) || ''
     const websiteTrap = (form.elements['website'] && form.elements['website'].value) || ''
-    log('Honeypot check', { botFieldLength: botField.length, botFieldFilled: botField.trim() !== '', websiteTrapLength: websiteTrap.length, websiteTrapFilled: websiteTrap.trim() !== '' })
+    platteDebug('ContactForm', 'Honeypot check', {
+      botFieldLength: botField.length,
+      botFieldFilled: botField.trim() !== '',
+      websiteTrapLength: websiteTrap.length,
+      websiteTrapFilled: websiteTrap.trim() !== '',
+    })
     if (botField.trim() !== '' || websiteTrap.trim() !== '') {
-      log('BLOCKED: Honeypot filled (silent reject)')
+      platteDebug('ContactForm', 'BLOCKED: Honeypot filled (silent success to bot)')
       setSubmitStatus('success') // silent reject: show success to bot
       return
     }
@@ -196,9 +223,13 @@ const Home = () => {
     const now = Date.now()
     const mountTime = formMountTimeRef.current
     const elapsed = mountTime != null ? now - mountTime : null
-    log('Time check', { formMountTime: mountTime, elapsedMs: elapsed, rejected: elapsed != null && elapsed < 2000 })
+    platteDebug('ContactForm', 'Time check', {
+      formMountTime: mountTime,
+      elapsedMs: elapsed,
+      rejectedTooFast: mountTime != null && now - mountTime < 2000,
+    })
     if (mountTime != null && now - mountTime < 2000) {
-      log('BLOCKED: Submitted too fast (silent reject)')
+      platteDebug('ContactForm', 'BLOCKED: Submitted too fast (silent success)')
       setSubmitStatus('success')
       return
     }
@@ -218,33 +249,63 @@ const Home = () => {
       if (error) errors[key] = error
     })
     setFormErrors(errors)
-    log('Validation', { errorCount: Object.keys(errors).length, errors: Object.keys(errors).length ? errors : null })
+    platteDebug('ContactForm', 'Validation pass', {
+      errorCount: Object.keys(errors).length,
+      errors: Object.keys(errors).length ? errors : null,
+    })
 
     // If no errors, submit
     if (Object.keys(errors).length === 0) {
       setIsSubmitting(true)
       setSubmitStatus(null)
 
-      const formDataToSubmit = new FormData(form)
-      const bodyString = new URLSearchParams(formDataToSubmit).toString()
-      const bodyKeys = [...formDataToSubmit.keys()]
-      log('Submitting to Netlify', { bodyKeys, bodyLength: bodyString.length, formName: form.getAttribute('name') })
+      const bot = (form.elements['bot-field'] && form.elements['bot-field'].value) || ''
+      const trap = (form.elements['website'] && form.elements['website'].value) || ''
+      const payload = {
+        'form-name': 'contact',
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+        company: formData.company.trim(),
+        message: formData.message.trim(),
+        'bot-field': bot,
+        website: trap,
+      }
+      const bodyString = new URLSearchParams(payload).toString()
+      const postUrl = typeof window !== 'undefined' ? new URL('/', window.location.origin).href : '/'
+      platteDebug('ContactForm', 'Prepared Netlify POST', {
+        postUrl,
+        mode: 'same-origin',
+        bodyLength: bodyString.length,
+        bodyDecodedPreview: bodyString.slice(0, 600),
+        hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+      })
+      platteDebug('ContactForm', 'Payload keys (message length)', {
+        ...payload,
+        message: `[${payload.message.length} chars] ${payload.message.slice(0, 200)}`,
+      })
       if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-        log('NOTE: You are on localhost. Netlify forms only work when deployed to Netlify or when using "netlify dev".')
+        platteDebug('ContactForm', 'NOTE: localhost — Netlify Forms need deploy or netlify dev')
       }
 
       try {
+        const t0 = typeof performance !== 'undefined' ? performance.now() : Date.now()
         const response = await fetch('/', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
           body: bodyString,
-          mode: 'same-origin'
+          mode: 'same-origin',
         })
-
-        log('Response received', { ok: response.ok, status: response.status, statusText: response.statusText, url: response.url, type: response.type })
+        const { bodyText } = await platteDebugResponse('ContactForm', response, 'Netlify POST response')
+        const t1 = typeof performance !== 'undefined' ? performance.now() : Date.now()
+        platteDebug('ContactForm', 'fetch elapsed ms', Math.round(t1 - t0))
 
         if (response.ok) {
-          log('SUCCESS')
+          platteDebug('ContactForm', '=== SUCCESS (HTTP ok) ===', {
+            responseBodyLength: bodyText.length,
+            responseStartsWithDoctype: /^<!DOCTYPE/i.test(bodyText.trim()),
+            hint: 'If Netlify dashboard empty: Forms → Spam submissions',
+          })
           setSubmitStatus('success')
           setFormData({
             firstName: '',
@@ -256,24 +317,33 @@ const Home = () => {
           setFormTouched({})
           setFormErrors({})
           form.reset()
+          platteDebugDomForms('ContactForm.afterReset')
         } else {
-          const responseText = await response.text()
-          log('FAIL: Non-OK response', { status: response.status, statusText: response.statusText, bodyPreview: responseText.slice(0, 500), bodyLength: responseText.length })
-          if (responseText.length > 500) log('FAIL: Response body (rest)', responseText.slice(500, 1500))
+          platteDebug('ContactForm', '=== FAIL (non-OK HTTP) ===', {
+            status: response.status,
+            bodyLength: bodyText.length,
+            bodyPreview: bodyText.slice(0, 1500),
+          })
           setSubmitStatus('error')
         }
       } catch (error) {
         console.error('[ContactForm] FAIL: Network or other error', error)
-        log('FAIL: Exception', { name: error?.name, message: error?.message, stack: error?.stack })
+        platteDebug('ContactForm', '=== FAIL (exception) ===', {
+          name: error?.name,
+          message: error?.message,
+          stack: error?.stack,
+        })
         setSubmitStatus('error')
       } finally {
         setIsSubmitting(false)
+        platteDebug('ContactForm', '=== SUBMIT ended (finally) ===')
       }
     } else {
-      log('Submit aborted: validation errors')
+      platteDebug('ContactForm', '=== SUBMIT aborted: validation errors ===', errors)
       const firstError = Object.keys(errors)[0]
       if (firstError && typeof document !== 'undefined') {
         const el = document.getElementById(firstError)
+        platteDebug('ContactForm', 'focus first invalid field', { firstError, found: !!el })
         if (el) el.focus()
       }
     }
@@ -1075,12 +1145,16 @@ const Home = () => {
           </div>
 
           <form 
-            name="contact" 
+            name="contact-form"
             method="POST" 
-            data-netlify="true" 
             data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
-            onFocus={() => { if (formMountTimeRef.current == null) formMountTimeRef.current = Date.now() }}
+            onFocus={() => {
+              if (formMountTimeRef.current == null) {
+                formMountTimeRef.current = Date.now()
+                platteDebug('ContactForm', 'first focus: timer armed', { t: formMountTimeRef.current })
+              }
+            }}
             className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 border border-white/20"
           >
             <input type="hidden" name="form-name" value="contact" />

@@ -81,8 +81,8 @@
   <body>
     <div id="root"></div>
     <!-- Netlify form detection (build-time): must stay in built dist/index.html; pairs with React forms. -->
+    <!-- Do not add form-name here — Netlify injects it at deploy. Duplicate breaks some handlers. -->
     <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display:none" aria-hidden="true">
-      <input type="hidden" name="form-name" value="contact" />
       <input type="text" name="firstName" />
       <input type="text" name="lastName" />
       <input type="email" name="email" />

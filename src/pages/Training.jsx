@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { platteDebug, platteDebugDomForms, platteDebugResponse } from '../utils/debugLog'
 
 const SITE_URL = 'https://www.platte-river.com'
 
@@ -24,6 +25,16 @@ const Training = () => {
   const coursesRef = useRef(null)
   const registerRef = useRef(null)
   const formMountTimeRef = useRef(null)
+
+  useEffect(() => {
+    platteDebug('Training', 'mount / remount')
+    platteDebugDomForms('Training.mount')
+    return () => platteDebug('Training', 'unmount')
+  }, [])
+
+  useEffect(() => {
+    platteDebug('Training', 'submitStatus / isSubmitting', { submitStatus, isSubmitting })
+  }, [submitStatus, isSubmitting])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -61,6 +72,7 @@ const Training = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
+    platteDebug('TrainingForm', `input: ${name}`, { len: value.length, preview: value.slice(0, 60) })
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (formTouched[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: validateField(name, value) }))
@@ -69,22 +81,43 @@ const Training = () => {
 
   const handleBlur = (e) => {
     const { name, value } = e.target
+    const err = validateField(name, value)
+    platteDebug('TrainingForm', `blur: ${name}`, { valueLen: value.length, error: err || '(none)' })
     setFormTouched((prev) => ({ ...prev, [name]: true }))
-    setFormErrors((prev) => ({ ...prev, [name]: validateField(name, value) }))
+    setFormErrors((prev) => ({ ...prev, [name]: err }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.target
+
+    platteDebug('TrainingForm', '=== SUBMIT started ===')
+    platteDebugDomForms('TrainingForm.beforeChecks')
+    platteDebug('TrainingForm', 'form element', {
+      name: form.getAttribute('name'),
+      method: form.method,
+      action: form.action || '(empty)',
+    })
+
     const botField = (form.elements['bot-field'] && form.elements['bot-field'].value) || ''
     const websiteTrap = (form.elements['website'] && form.elements['website'].value) || ''
+    platteDebug('TrainingForm', 'Honeypot', {
+      botLen: botField.length,
+      botFilled: botField.trim() !== '',
+      websiteLen: websiteTrap.length,
+      websiteFilled: websiteTrap.trim() !== '',
+    })
     if (botField.trim() !== '' || websiteTrap.trim() !== '') {
+      platteDebug('TrainingForm', 'BLOCKED honeypot (silent success)')
       setSubmitStatus('success')
       setFormData({ firstName: '', lastName: '', company: '', position: '', email: '', cityState: '', classOption: '' })
       setFormTouched({})
       return
     }
+    const elapsed = formMountTimeRef.current != null ? Date.now() - formMountTimeRef.current : null
+    platteDebug('TrainingForm', 'Time gate', { formMountTime: formMountTimeRef.current, elapsedMs: elapsed })
     if (formMountTimeRef.current != null && Date.now() - formMountTimeRef.current < 2000) {
+      platteDebug('TrainingForm', 'BLOCKED too fast (silent success)')
       setSubmitStatus('success')
       return
     }
@@ -98,28 +131,61 @@ const Training = () => {
     })
     setFormErrors(errors)
     setFormTouched(Object.keys(formData).reduce((acc, k) => ({ ...acc, [k]: true }), {}))
-    if (Object.keys(errors).length > 0) return
+    platteDebug('TrainingForm', 'Validation', { errorCount: Object.keys(errors).length, errors })
+    if (Object.keys(errors).length > 0) {
+      platteDebug('TrainingForm', '=== SUBMIT aborted validation ===')
+      return
+    }
 
     setIsSubmitting(true)
     try {
       const formDataToSubmit = new FormData(form)
+      const keys = [...formDataToSubmit.keys()]
       const body = new URLSearchParams(formDataToSubmit).toString()
+      platteDebug('TrainingForm', 'POST body prepared', {
+        keys,
+        bodyLength: body.length,
+        bodyPreview: body.slice(0, 700),
+        postUrl: typeof window !== 'undefined' ? new URL('/', window.location.origin).href : '/',
+      })
+
+      const t0 = typeof performance !== 'undefined' ? performance.now() : Date.now()
       const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
         body,
+        mode: 'same-origin',
       })
+      const { bodyText } = await platteDebugResponse('TrainingForm', res, 'Netlify POST response')
+      const t1 = typeof performance !== 'undefined' ? performance.now() : Date.now()
+      platteDebug('TrainingForm', 'fetch elapsed ms', Math.round(t1 - t0))
+
       if (res.ok) {
+        platteDebug('TrainingForm', '=== SUCCESS ===', {
+          bodyLength: bodyText.length,
+          startsWithDoctype: /^<!DOCTYPE/i.test(bodyText.trim()),
+        })
         setSubmitStatus('success')
         setFormData({ firstName: '', lastName: '', company: '', position: '', email: '', cityState: '', classOption: '' })
         setFormTouched({})
+        platteDebugDomForms('TrainingForm.afterSuccess')
       } else {
+        platteDebug('TrainingForm', '=== FAIL HTTP ===', {
+          status: res.status,
+          bodyPreview: bodyText.slice(0, 1200),
+        })
         setSubmitStatus('error')
       }
-    } catch {
+    } catch (err) {
+      platteDebug('TrainingForm', '=== FAIL exception ===', {
+        name: err?.name,
+        message: err?.message,
+        stack: err?.stack,
+      })
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
+      platteDebug('TrainingForm', '=== SUBMIT ended ===')
     }
   }
 
@@ -302,7 +368,12 @@ const Training = () => {
               data-netlify="true"
               data-netlify-honeypot="bot-field"
               onSubmit={handleSubmit}
-              onFocus={() => { if (formMountTimeRef.current == null) formMountTimeRef.current = Date.now() }}
+              onFocus={() => {
+                if (formMountTimeRef.current == null) {
+                  formMountTimeRef.current = Date.now()
+                  platteDebug('TrainingForm', 'first focus: timer armed', { t: formMountTimeRef.current })
+                }
+              }}
               className={`bg-white rounded-xl shadow-lg p-8 border border-gray-100 transition-all duration-700 ${isVisible['register'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             >
               <input type="hidden" name="form-name" value="training-registration" />
