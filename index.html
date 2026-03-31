@@ -80,26 +80,28 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Netlify form detection: contact (used by Home.jsx) -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-      <input name="form-name" value="contact" />
-      <input name="firstName" />
-      <input name="lastName" />
-      <input name="email" type="email" />
-      <input name="company" />
-      <input name="message" />
-      <input name="bot-field" />
-      <input name="website" />
+    <!-- Netlify form detection (build-time): must stay in built dist/index.html; pairs with React forms. -->
+    <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display:none" aria-hidden="true">
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="email" name="email" />
+      <input type="text" name="company" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+      <input type="text" name="website" />
     </form>
-    <!-- Netlify form detection for training registration -->
-    <form name="training-registration" netlify netlify-honeypot="bot-field" hidden>
-      <input name="firstName" />
-      <input name="lastName" />
-      <input name="company" />
-      <input name="position" />
-      <input name="email" type="email" />
-      <input name="cityState" />
+    <form name="training-registration" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display:none" aria-hidden="true">
+      <input type="hidden" name="form-name" value="training-registration" />
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="text" name="company" />
+      <input type="text" name="position" />
+      <input type="email" name="email" />
+      <input type="text" name="cityState" />
       <select name="classOption"><option value=""></option></select>
+      <input type="text" name="bot-field" />
+      <input type="text" name="website" />
     </form>
     <script type="module" src="/src/main.jsx"></script>
   </body>

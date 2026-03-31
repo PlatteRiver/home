@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Netlify Forms: hidden HTML forms in index.html are parsed at deploy time.
+# In the dashboard: Site settings → Forms → Usage and configuration → Form detection
+# must be enabled, or POST submissions will return 404.

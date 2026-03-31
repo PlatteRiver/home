@@ -102,11 +102,13 @@ const Training = () => {
 
     setIsSubmitting(true)
     try {
-      const body = new URLSearchParams({
-        'form-name': 'training-registration',
-        ...formData,
+      const formDataToSubmit = new FormData(form)
+      const body = new URLSearchParams(formDataToSubmit).toString()
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
       })
-      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
       if (res.ok) {
         setSubmitStatus('success')
         setFormData({ firstName: '', lastName: '', company: '', position: '', email: '', cityState: '', classOption: '' })
