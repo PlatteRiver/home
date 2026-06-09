@@ -65,6 +65,10 @@ const Navbar = () => {
                 Industries
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
               </a>
+              <Link to="/gis-kickstart" className={navLinkClass('/gis-kickstart')}>
+                GIS Kickstart
+                {!isActive('/gis-kickstart') && <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>}
+              </Link>
               <Link to="/training" className={navLinkClass('/training')}>
                 Training
                 {!isActive('/training') && <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>}
@@ -112,6 +116,9 @@ const Navbar = () => {
             <a href="/#industries" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium">
               Industries
             </a>
+            <Link to="/gis-kickstart" onClick={() => setMobileMenuOpen(false)} className={mobileLinkClass('/gis-kickstart')}>
+              GIS Kickstart
+            </Link>
             <Link to="/training" onClick={() => setMobileMenuOpen(false)} className={mobileLinkClass('/training')}>
               Training
             </Link>

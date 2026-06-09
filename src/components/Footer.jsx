@@ -26,6 +26,7 @@ const Footer = () => {
           <div>
             <h2 className="text-white font-semibold mb-4 text-base">Services</h2>
             <ul className="space-y-2 text-sm">
+              <li><Link to="/gis-kickstart" className="hover:text-white transition-colors">GIS Kickstart</Link></li>
               <li><Link to="/#services" className="hover:text-white transition-colors">GIS Consulting</Link></li>
               <li><Link to="/#services" className="hover:text-white transition-colors">Interactive Mapping</Link></li>
               <li><Link to="/#services" className="hover:text-white transition-colors">Data Collection</Link></li>

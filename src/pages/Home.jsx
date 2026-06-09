@@ -406,6 +406,10 @@ const Home = () => {
                   Industries
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
                 </a>
+                <Link to="/gis-kickstart" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
+                  GIS Kickstart
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
                 <Link to="/training" className="text-gray-700 hover:text-[#203b54] px-3 py-2 text-sm font-medium transition-all duration-300 relative group">
                   Training
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>
@@ -471,6 +475,13 @@ const Home = () => {
               >
                 Industries
               </a>
+              <Link
+                to="/gis-kickstart"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-gray-700 hover:text-[#203b54] hover:bg-gray-50 rounded-lg transition-colors font-medium"
+              >
+                GIS Kickstart
+              </Link>
               <Link
                 to="/training"
                 onClick={() => setMobileMenuOpen(false)}
@@ -628,6 +639,28 @@ const Home = () => {
                 <p className="text-gray-600 leading-relaxed">{service.desc}</p>
               </div>
             ))}
+          </div>
+
+          <div
+            className={`mt-12 rounded-2xl overflow-hidden border-2 border-[#97a3b1] bg-gradient-to-br from-[#203b54] to-[#2a4a6b] shadow-xl transition-all duration-1000 ${isVisible['services'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            style={{ transitionDelay: '700ms' }}
+          >
+            <div className="p-8 md:p-10 md:flex md:items-center md:justify-between md:gap-8">
+              <div className="flex-1 text-white mb-6 md:mb-0">
+                <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-semibold mb-4">Service Package</div>
+                <h3 className="text-2xl md:text-3xl font-bold mb-3">GIS Kickstart</h3>
+                <p className="text-white/90 leading-relaxed max-w-2xl">
+                  A 3-day virtual or on-site package to get your team running on ArcGIS Online—data publishing, users and groups, web maps, apps, dashboards, and hands-on training.
+                </p>
+              </div>
+              <Link
+                to="/gis-kickstart"
+                className="inline-flex items-center space-x-2 bg-white text-[#203b54] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 whitespace-nowrap"
+              >
+                <span>Learn More</span>
+                <i className="fas fa-arrow-right"></i>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

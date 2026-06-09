@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Blog from './pages/Blog'
 import About from './pages/About'
 import Training from './pages/Training'
+import GisKickstart from './pages/GisKickstart'
 import AcreVision from './pages/AcreVision'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
@@ -34,6 +35,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/about" element={<About />} />
         <Route path="/training" element={<Training />} />
+        <Route path="/gis-kickstart" element={<GisKickstart />} />
         <Route path="/acrevision" element={<AcreVision />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
