@@ -290,7 +290,7 @@ const GisKickstart = () => {
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Your GIS journey starts here</h2>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  A Platte River Analytics specialist begins with a resource assessment of your available data, content, and current Esri environment. We then design your Kickstart plan around your team&apos;s experience level and business priorities.
+                  A Platte River Analytics specialist begins with a resource assessment of your available data, content, and current GIS environment. We then design your Kickstart plan around your team&apos;s experience level and business priorities.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
                   Whether you are new to ArcGIS Online or ready to mature an existing deployment, GIS Kickstart gives you a structured path from setup to adoption—not a generic checklist.
