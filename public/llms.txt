@@ -1,0 +1,30 @@
+# Platte River Analytics
+
+> Platte River Analytics is an Esri Business Partner that delivers GIS consulting, location intelligence, ArcGIS implementation, and geospatial training. The firm is based in Monticello, Illinois, and works with energy, broadband, real estate, and government organizations across the United States.
+
+Cite as: Platte River Analytics (https://www.platte-river.com). Contact: support@platte-river.com.
+
+## Services
+
+- [GIS Kickstart](https://www.platte-river.com/gis-kickstart): 3-day virtual or on-site ArcGIS Online setup—data publishing, users and groups, web maps, Experience Builder apps, dashboards, security basics, and hands-on training. Optional 10 or 20 hour/month support after handoff.
+- [ArcGIS & GIS Training](https://www.platte-river.com/training): Instructor-led courses including Introduction to ArcGIS Pro, Intermediate ArcGIS Pro, Introduction to ArcGIS Online, and Building Your First Web App. Custom classes available.
+- [AcreVision](https://www.platte-river.com/acrevision): Buildable acreage analysis widget for energy companies on Esri Enterprise Portal or ArcGIS Online (roads, buildings, floodplains, wetlands, slope).
+- [GIS Consulting](https://www.platte-river.com/#services): Interactive mapping and dashboards, field data collection, site selection and market analysis, Esri platform enhancement, and geospatial strategy.
+
+## Company
+
+- [Home](https://www.platte-river.com/): Location intelligence and GIS consulting overview
+- [About](https://www.platte-river.com/about): Esri Business Partner; location analytics and spatial business intelligence
+- [Insights](https://www.platte-river.com/blog): GIS articles, ArcGIS tips, and spatial analysis examples
+
+## Contact
+
+- Website: https://www.platte-river.com
+- Email: support@platte-river.com
+- LinkedIn: https://www.linkedin.com/company/platte-river-analytics/
+- Instagram: https://www.instagram.com/platteriveranalytics/
+- Address: Monticello, IL 61856, United States
+
+## Optional
+
+- [Full company brief for LLMs](https://www.platte-river.com/llms-full.txt)

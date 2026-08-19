@@ -43,18 +43,83 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Organization",
+          "@type": ["Organization", "ProfessionalService"],
           "@id": "https://www.platte-river.com/#organization",
           "name": "Platte River Analytics",
+          "legalName": "Platte River Analytics",
           "url": "https://www.platte-river.com",
           "logo": { "@type": "ImageObject", "url": "https://www.platte-river.com/platte_river_analytics_logo.jpg" },
-          "description": "Location intelligence and GIS consulting for enterprise and government. Esri Business Partner specializing in site selection, interactive mapping, and geospatial strategy.",
+          "image": "https://www.platte-river.com/platte_river_analytics_logo.jpg",
+          "description": "Esri Business Partner providing GIS consulting, location intelligence, ArcGIS Online and Enterprise implementation, GIS Kickstart, ArcGIS training, and AcreVision buildable-acreage analysis for energy, broadband, and real estate.",
           "email": "support@platte-river.com",
-          "address": { "@type": "PostalAddress", "addressLocality": "Monticello", "addressRegion": "IL", "postalCode": "61856" },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Monticello",
+            "addressRegion": "IL",
+            "postalCode": "61856",
+            "addressCountry": "US"
+          },
+          "areaServed": { "@type": "Country", "name": "United States" },
+          "knowsAbout": [
+            "GIS consulting",
+            "location intelligence",
+            "ArcGIS Online",
+            "ArcGIS Pro",
+            "ArcGIS Enterprise",
+            "Experience Builder",
+            "GIS Kickstart",
+            "site selection",
+            "broadband GIS",
+            "renewable energy GIS",
+            "AcreVision"
+          ],
           "sameAs": [
             "https://www.linkedin.com/company/platte-river-analytics/",
             "https://www.instagram.com/platteriveranalytics/"
-          ]
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "GIS services and products",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "GIS Kickstart",
+                  "url": "https://www.platte-river.com/gis-kickstart",
+                  "description": "3-day virtual or on-site ArcGIS Online setup: data publishing, users and groups, web maps, apps, dashboards, and training."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "ArcGIS and GIS Training",
+                  "url": "https://www.platte-river.com/training",
+                  "description": "Instructor-led ArcGIS Pro, ArcGIS Online, and Experience Builder courses for energy and GIS professionals."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "AcreVision",
+                  "url": "https://www.platte-river.com/acrevision",
+                  "applicationCategory": "BusinessApplication",
+                  "description": "Buildable acreage analysis widget for energy companies on Esri Portal and ArcGIS Online."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "GIS Consulting",
+                  "url": "https://www.platte-river.com/#services",
+                  "description": "Interactive mapping, dashboards, site selection, field data collection, Esri platform enhancement, and geospatial strategy."
+                }
+              }
+            ]
+          }
         },
         {
           "@type": "WebSite",
@@ -65,13 +130,49 @@
           "inLanguage": "en-US"
         },
         {
-          "@type": "ItemList",
-          "itemListElement": [
-            { "@type": "Service", "name": "GIS Consulting & Training", "description": "Expert guidance on Esri products, GIS workflows, and technical skill development." },
-            { "@type": "Service", "name": "Interactive Mapping & Dashboards", "description": "Web-based maps and dashboards combining spatial and tabular data for data-driven decisions." },
-            { "@type": "Service", "name": "Site Selection & Market Analysis", "description": "Location-based analysis for broadband, solar, wind, and real estate projects." },
-            { "@type": "Service", "name": "Esri Platform Enhancement", "description": "Custom application development, enterprise GIS configuration, and workflow automation." },
-            { "@type": "Service", "name": "Geospatial Strategy", "description": "Geospatial roadmap and strategy for how your organization will utilize GIS." }
+          "@type": "FAQPage",
+          "@id": "https://www.platte-river.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is Platte River Analytics?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Platte River Analytics is an Esri Business Partner in Monticello, Illinois that provides GIS consulting, location intelligence, ArcGIS implementation, and training for energy, broadband, real estate, and government organizations. Website: https://www.platte-river.com. Email: support@platte-river.com."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is GIS Kickstart?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "GIS Kickstart is a 3-day virtual or on-site ArcGIS Online implementation package from Platte River Analytics. It covers data publishing, schemas, users and groups, web maps, Experience Builder apps and dashboards, security basics, and hands-on training, with optional 10 or 20 hour per month support after handoff. Details: https://www.platte-river.com/gis-kickstart"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Platte River Analytics offer Esri or ArcGIS training?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. As an Esri Business Partner they offer instructor-led courses including Introduction to ArcGIS Pro, Intermediate ArcGIS Pro, Introduction to ArcGIS Online, and Building Your First Web App, plus custom classes. Register at https://www.platte-river.com/training"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is AcreVision?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "AcreVision is Platte River Analytics’ buildable acreage analysis widget for energy companies using Esri Enterprise Portal or ArcGIS Online. It factors roads, buildings, floodplains, wetlands, and slope. Details: https://www.platte-river.com/acrevision"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I contact Platte River Analytics?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Email support@platte-river.com or use the consultation form at https://www.platte-river.com/#contact. GIS Kickstart inquiries: https://www.platte-river.com/gis-kickstart"
+              }
+            }
           ]
         }
       ]
