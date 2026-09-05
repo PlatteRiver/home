@@ -9,6 +9,7 @@ import GisKickstart from './pages/GisKickstart'
 import AcreVision from './pages/AcreVision'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
+import NotFound from './pages/NotFound'
 import { platteDebug } from './utils/debugLog'
 
 function RouteDebug() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/acrevision" element={<AcreVision />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )

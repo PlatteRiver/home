@@ -32,6 +32,130 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      id: 17,
+      title: 'Web AppBuilder Updates End in Q4 2026: Move Your Apps to Experience Builder Now',
+      author: 'Platte River Analytics',
+      date: 'September 10, 2026',
+      readTime: '5 min read',
+      excerpt: 'ArcGIS Online will stop allowing updates to existing Web AppBuilder apps in Q4 2026, and those apps stop working in Q2 2027. If your energy or broadband team still lives in WAB viewers, this is the quarter to migrate—not next year.',
+      content: `ArcGIS Online will stop allowing updates to existing Web AppBuilder apps in Q4 2026. In Q2 2027 those apps stop functioning. New Web AppBuilder apps have already been closed since Q1 2026. If your operations, land, or broadband team still opens a WAB viewer every morning, the calendar is no longer theoretical.
+
+Esri’s replacement is ArcGIS Experience Builder. It is not a one-click “upgrade this app” button. It is a rebuild—with better layout, mobile, and integration options than WAB ever had. The organizations that start now finish before the freeze. The ones that wait will be changing production apps while they can no longer save them.
+
+## What Esri actually scheduled
+
+Esri documented the ArcGIS Online timeline in their Web AppBuilder to Experience Builder migration guidance on the Esri blog:
+
+- **Q1 2026:** You can no longer create new Web AppBuilder apps. That date has already passed.
+- **Q4 2026:** You can no longer update existing Web AppBuilder apps. Configuration, widgets, and data sources freeze.
+- **Q2 2027:** Existing Web AppBuilder apps are retired and stop working.
+
+ArcGIS Enterprise has its own clock, but Online customers should treat Q4 2026 as the last chance to change a WAB app. After that, you can look at it until Q2 2027—you just cannot fix it.
+
+## Why this hits energy and broadband teams first
+
+We still see Web AppBuilder used as the daily map for lease status, constraint overlays, as-built fiber, or field inspection queues. Those apps were often built five or six years ago with a stack of custom widgets and a sharing model nobody has reviewed since.
+
+That is exactly the risk. A WAB app that “still works” can hide:
+
+- Layers pointed at retired or renamed services
+- Widget settings that only one person understands
+- Sharing that is wider than your IT policy allows
+- Desktop-only layouts that field staff abandoned for screenshots
+
+When updates freeze, those problems become permanent until you rebuild.
+
+## Inventory before you rebuild
+
+Do not open Experience Builder and start dragging widgets. Spend a day listing every WAB app in the organization:
+
+- **Owner and purpose.** Who uses it, and what decision does it support?
+- **Widgets.** Which ones are load-bearing (query, edit, print, attribute table, custom)?
+- **Data.** Hosted layers vs. registered services vs. Living Atlas.
+- **Sharing.** Groups, org-wide, or public.
+- **Keep, merge, or retire.** Some apps should become one Experience with pages—not six separate WAB clones.
+
+A few WAB widgets will not have a one-to-one twin (for example, some emergency or threat-analysis tools). Most operational viewers—map, filter, query, edit, print, legend—now have Experience Builder equivalents, including split/merge editing and restore-app-state, which were late parity items.
+
+## Rebuild vs. Instant Apps
+
+Not every WAB app needs a full Experience. Instant Apps cover simple “one map, a few tools” viewers faster and with less configuration. Use Experience Builder when you need pages, windows, multiple maps, dashboards in the same shell, or custom layout. That is the pattern we use in GIS Kickstart: maps first, then Experience Builder apps and dashboards that match how the team actually works—not a generic widget dump.
+
+## Sharing and security are part of the migration
+
+Copying the map is the easy half. Recreate groups, item sharing, and editing privileges in the new app. If the old WAB was “everyone in the org,” this is the moment to tighten it. Experience Builder apps are items like anything else in ArcGIS Online; treat them like production software, not a scratch web map.
+
+## Training so the new app sticks
+
+A rebuilt app that only the GIS lead can edit is how you end up with another frozen viewer in 2029. Budget a short admin session (who owns the Experience, how to swap a layer, how to republish) and an end-user session (filters, pop-ups, mobile). That handoff is the same discipline we use on a three-day Kickstart.
+
+## What to do this month
+
+- Export or screenshot widget configs for every WAB app you still need.
+- Pick one high-traffic viewer and rebuild it in Experience Builder before Q4.
+- Decide Instant App vs. Experience per remaining app.
+- Schedule user training before you turn the old URL off.
+
+If you want a structured standup—maps, Experience Builder, groups, and training—see GIS Kickstart or the contact form on platte-river.com. Waiting until the update freeze is how migrations become emergencies.`,
+      dashboardLink: null,
+      category: 'ArcGIS Online',
+      tags: ['Experience Builder', 'Web AppBuilder', 'ArcGIS Online', 'Migration'],
+    },
+    {
+      id: 18,
+      title: 'What ArcGIS Pro 3.6 Changes for Energy and GIS Teams',
+      author: 'Platte River Analytics',
+      date: 'July 16, 2026',
+      readTime: '5 min read',
+      excerpt: 'ArcGIS Pro 3.6 is not a cosmetic release. Redesigned ModelBuilder, faster geodatabase schema compare, Arcade checks, and Spatial Analyst suitability updates change how constraint models and Online publishing actually get done.',
+      content: `ArcGIS Pro 3.6 shipped in late 2025. By mid-2026, the teams that upgraded are using it as the daily desktop—not as a “we should look at that” item on a backlog. If you are still on 3.3 or 3.4, this is a practical briefing on what actually matters for energy, broadband, and land GIS—not a tour of every 3D demo.
+
+Esri’s own notes are in What’s new in ArcGIS Pro 3.6 (pro.arcgis.com) and the November 2025 Pro update on the Esri blog. Below is what we see showing up in real project work.
+
+## Redesigned ModelBuilder (and why AGOL consistency matters)
+
+ModelBuilder in 3.6 looks and behaves more like ModelBuilder in ArcGIS Online: clearer layout, faster canvas, less “why did this connector jump.” That sounds cosmetic until you maintain a constraint model that six people touch.
+
+For a solar or wind screen, the model is the product: slope, floodplain, wetlands, setbacks, parcel filters, then a suitability surface. When the canvas is easier to read, reviews go faster and fewer tools get left disconnected. If you also run lighter models in Online, the visual language now matches. That reduces the “I built it in Pro, I cannot find it in Online” tax.
+
+If you have not opened your production models since 3.2, open them in 3.6 on a copy of the project first. Validate outputs against a known good run before you retire the old toolbox.
+
+## Schema compare without the archaeology
+
+3.6 makes geodatabase schema compare faster and easier. That is a quiet feature with a loud payoff.
+
+Energy shops inherit file geodatabases from prior consultants, surveyors, and internal “temp” copies. Domains drift. A subtype gets added on one machine and not another. Publishing to ArcGIS Online then fails—or worse, succeeds with the wrong coded values.
+
+Run schema compare before you publish, not after the field crew reports missing domains. Pair it with the data-rules work we do on Kickstart: domains, schemas, and editing rules so Online stays trustworthy.
+
+## Arcade errors you can see earlier
+
+Pro 3.6 tightens Arcade validation so expression mistakes show up before they hide in a pop-up or label on a published web map. If you use Arcade for status labels, acreage text, or conditional pop-ups (we wrote about that pattern in 2024), spend an hour re-opening those expressions after upgrade. Fixing them in Pro is cheaper than discovering a blank pop-up in a stakeholder demo.
+
+Calculate Field is also available directly from the attribute table. For one-off cleanup before a publish, that is fewer clicks and fewer “which toolbox was that in” moments.
+
+## Spatial Analyst: compare suitability models
+
+Spatial Analyst in 3.6 adds the ability to compare suitability models, plus additional tools and better parallelization/GPU on some processes. If you score sites on weighted criteria—irradiance vs. slope vs. distance to interconnect—you can now put two weighting schemes side by side instead of exporting rasters and arguing in PowerPoint.
+
+That is the same multi-criteria idea we use for solar site selection, now closer to the desktop workflow. It does not replace judgment. It makes the tradeoffs visible.
+
+## 3D is there; do not let it steal the upgrade
+
+Gaussian splat layers and the Google Photorealistic 3D basemap (beta) are the headlines. Useful for a board scene or a corridor fly-through. They are not why a land or GIS analyst should upgrade. Upgrade for models, schema, Arcade, and suitability. Use 3D when you have a specific audience that needs it.
+
+## Should you move this quarter?
+
+Yes, if you publish to ArcGIS Online or Enterprise regularly and your models are the source of truth. Pair companion versions when you can (Pro 3.6 with a current Enterprise). Test on a copy of the project, especially if you still have Python 2–era scripts (you should not) or custom script tools.
+
+If the team is still mixing ArcMap muscle memory with Pro, our ArcGIS Pro training at /training covers the daily tools. If the bigger problem is the Online org those Pro layers land in—users, groups, maps, apps—start with GIS Kickstart at /gis-kickstart.
+
+Pro 3.6 will not redesign your GIS program. It will make the program you already have easier to defend.`,
+      dashboardLink: null,
+      category: 'ArcGIS Pro',
+      tags: ['ArcGIS Pro', 'ModelBuilder', 'Site Selection', 'Spatial Analyst'],
+    },
+    {
       id: 4,
       title: 'Why GIS is Critical for Solar Energy Site Selection',
       author: 'Platte River Analytics',
