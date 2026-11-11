@@ -353,11 +353,11 @@ const Home = () => {
     <div className="min-h-screen bg-white">
       <Helmet>
         <title>Platte River Analytics | Enterprise GIS Consulting & Location Intelligence</title>
-        <meta name="description" content="Platte River Analytics delivers Fortune 500–grade GIS consulting, Esri platform implementation, and location intelligence. Site selection, interactive mapping, dashboards, and geospatial strategy for energy, broadband, and real estate." />
+        <meta name="description" content="GIS consulting and ArcGIS solutions for energy, broadband, and real estate. We build GIS systems, automate spatial workflows, and deliver site selection, mapping, and dashboards." />
         <link rel="canonical" href={SITE_URL + '/'} />
         <meta property="og:title" content="Platte River Analytics | Enterprise GIS Consulting & Location Intelligence" />
         <meta property="og:url" content={SITE_URL + '/'} />
-        <meta property="og:description" content="Expert GIS consulting, Esri implementation, and location intelligence for energy, broadband, and real estate. Site selection, dashboards, and geospatial strategy." />
+        <meta property="og:description" content="GIS consulting and ArcGIS solutions for energy, broadband, and real estate: GIS systems, automated spatial workflows, site selection, mapping, and dashboards." />
       </Helmet>
       {/* Scroll Progress Indicator */}
       <div 
@@ -579,11 +579,14 @@ const Home = () => {
                     & GIS Consulting
                   </span>
                 </h1>
-                <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed hero-description">
-                  Transform spatial data into strategic decisions. Expert GIS consulting, interactive mapping, and Esri-based solutions for organizations that need location intelligence.
+                <p className="text-lg md:text-xl text-gray-700 mb-4 leading-relaxed hero-description">
+                  Turn spatial data into decisions.
+                </p>
+                <p className="text-base md:text-lg text-gray-600 mb-4 leading-relaxed max-w-3xl mx-auto">
+                  Platte River Analytics helps energy, broadband, and real estate organizations build GIS systems, automate spatial workflows, and turn complex location data into actionable intelligence.
                 </p>
                 <p className="text-sm font-semibold text-[#203b54] mb-6">
-                  Esri Business Partner specializing in energy and broadband.
+                  Esri Business Partner · ArcGIS System Ready Specialty
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 hero-buttons justify-center">
                   <a href="#contact" className="bg-[#203b54] text-white px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#1a2f44] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 duration-300 group relative overflow-hidden">
@@ -593,8 +596,8 @@ const Home = () => {
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-[#97a3b1] to-[#203b54] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </a>
-                  <a href="#services" className="bg-white text-[#203b54] border-2 border-[#203b54] px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#f5f7f9] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 hover:border-[#97a3b1]">
-                    Explore Services
+                  <a href="#work" className="bg-white text-[#203b54] border-2 border-[#203b54] px-7 py-3.5 rounded-lg text-base font-semibold hover:bg-[#f5f7f9] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 hover:border-[#97a3b1]">
+                    View Our Work
                   </a>
                 </div>
               </div>
@@ -666,7 +669,7 @@ const Home = () => {
       </section>
 
       {/* Live Dashboard Section – full width */}
-      <section className="w-full py-16 md:py-20 bg-gradient-to-br from-[#f5f7f9] to-[#e8ebee] relative overflow-hidden">
+      <section id="work" className="w-full py-16 md:py-20 bg-gradient-to-br from-[#f5f7f9] to-[#e8ebee] relative overflow-hidden scroll-mt-24">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="relative group max-w-[1920px] mx-auto">
             <div className="absolute -inset-2 bg-gradient-to-r from-[#203b54] via-[#97a3b1] to-[#203b54] rounded-2xl blur-xl opacity-20 group-hover:opacity-35 transition duration-1000"></div>
