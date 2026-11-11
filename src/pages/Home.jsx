@@ -583,7 +583,7 @@ const Home = () => {
                   Turn spatial data into decisions.
                 </p>
                 <p className="text-base md:text-lg text-gray-600 mb-4 leading-relaxed max-w-3xl mx-auto">
-                  Platte River Analytics helps energy, broadband, and real estate organizations build GIS systems, automate spatial workflows, and turn complex location data into actionable intelligence.
+                  Platte River Analytics helps energy, broadband, and real estate organizations build GIS systems, automate spatial workflows, and turn complex location data into clear answers.
                 </p>
                 <p className="text-sm font-semibold text-[#203b54] mb-6">
                   Esri Business Partner · ArcGIS System Ready Specialty

@@ -19,7 +19,7 @@ const Footer = () => {
             </p>
             <div className="text-gray-400 text-sm space-y-1">
               <p><i className="fas fa-envelope mr-2"></i><a href="mailto:support@platte-river.com" className="hover:text-white transition-colors">support@platte-river.com</a></p>
-              <p><i className="fas fa-ticket-alt mr-2"></i><a href="mailto:tickets@platte-river.com" className="hover:text-white transition-colors">tickets@platte-river.com</a></p>
+              <p><i className="fas fa-ticket-alt mr-2"></i><a href="mailto:requests@platte-river.com" className="hover:text-white transition-colors">requests@platte-river.com</a></p>
               <p><i className="fas fa-map-marker-alt mr-2"></i>Monticello, IL 61856</p>
             </div>
           </div>

@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 
 const SITE_URL = 'https://www.platte-river.com'
 const API_URL = import.meta.env.VITE_TICKETS_API || 'https://app.platte-river.com/api/public/tickets'
-const TICKETS_EMAIL = 'tickets@platte-river.com'
+const TICKETS_EMAIL = 'requests@platte-river.com'
 
 const REQUEST_TYPES = [
   'New map',
