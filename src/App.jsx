@@ -7,6 +7,7 @@ import About from './pages/About'
 import Training from './pages/Training'
 import GisKickstart from './pages/GisKickstart'
 import AcreVision from './pages/AcreVision'
+import RequestTicket from './pages/RequestTicket'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import NotFound from './pages/NotFound'
@@ -38,6 +39,7 @@ function App() {
         <Route path="/training" element={<Training />} />
         <Route path="/gis-kickstart" element={<GisKickstart />} />
         <Route path="/acrevision" element={<AcreVision />} />
+        <Route path="/request" element={<RequestTicket />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="*" element={<NotFound />} />

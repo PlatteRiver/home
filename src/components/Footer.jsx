@@ -19,6 +19,7 @@ const Footer = () => {
             </p>
             <div className="text-gray-400 text-sm space-y-1">
               <p><i className="fas fa-envelope mr-2"></i><a href="mailto:support@platte-river.com" className="hover:text-white transition-colors">support@platte-river.com</a></p>
+              <p><i className="fas fa-ticket-alt mr-2"></i><a href="mailto:tickets@platte-river.com" className="hover:text-white transition-colors">tickets@platte-river.com</a></p>
               <p><i className="fas fa-map-marker-alt mr-2"></i>Monticello, IL 61856</p>
             </div>
           </div>
@@ -52,6 +53,7 @@ const Footer = () => {
               <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
               <li><Link to="/acrevision" className="hover:text-white transition-colors">AcreVision</Link></li>
               <li><Link to="/training" className="hover:text-white transition-colors">Training</Link></li>
+              <li><Link to="/request" className="hover:text-white transition-colors">Submit a Request</Link></li>
               <li><Link to="/#contact" className="hover:text-white transition-colors">Contact</Link></li>
             </ul>
             <div className="flex space-x-4 mt-4">

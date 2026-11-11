@@ -77,6 +77,10 @@ const Navbar = () => {
                 Insights
                 {!isActive('/blog') && <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>}
               </Link>
+              <Link to="/request" className={navLinkClass('/request')}>
+                Submit a Request
+                {!isActive('/request') && <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#203b54] transition-all duration-300 group-hover:w-full"></span>}
+              </Link>
               <Link to="/#contact" className="bg-[#203b54] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#1a2f44] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                 Contact Us
               </Link>
@@ -100,7 +104,7 @@ const Navbar = () => {
 
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? 'max-h-[420px] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'
+            mobileMenuOpen ? 'max-h-[480px] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="py-4 pb-6 space-y-2 border-t border-gray-200">
@@ -124,6 +128,9 @@ const Navbar = () => {
             </Link>
             <Link to="/blog" onClick={() => setMobileMenuOpen(false)} className={mobileLinkClass('/blog')}>
               Insights
+            </Link>
+            <Link to="/request" onClick={() => setMobileMenuOpen(false)} className={mobileLinkClass('/request')}>
+              Submit a Request
             </Link>
             <Link
               to="/#contact"
